@@ -48,6 +48,7 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
                         this.recordCount = this.searchData.length;
                         this.currentIndex = 0;
                         this.displayRecord(this.searchData[this.currentIndex]);
+                        console.log(response.data);
                     }
                 })
                 .catch((error) => {
@@ -70,10 +71,32 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
             displayText.innerText = record.display_name;
             resultsContainer.appendChild(displayText);
 
-            //Display category
+            //Display type
             const typeText = document.createElement("p");
-            typeText.innerText = record.type;
+            typeText.innerText = "Type:" + record.type;
             resultsContainer.appendChild(typeText);
+
+            //Display class
+            const classText = document.createElement("p");
+            classText.innerText = "Class:" + record.class;
+            resultsContainer.appendChild(classText);
+
+            //Display Latitude
+            const latitudeText = document.createElement("p");
+            latitudeText.innerText = "Latitude:" + record.lat;
+            resultsContainer.appendChild(latitudeText);            
+
+            //Display Longitude
+            const longitudeText = document.createElement("p");
+            longitudeText.innerText = "Longitude:" + record.lon;
+            resultsContainer.appendChild(longitudeText);    
+
+            //Display Bounding box coordinates
+            const boundingboxText = document.createElement("p");
+            boundingboxText.innerText = "Bounding box coordinates:" + record.boundingbox;
+            resultsContainer.appendChild(boundingboxText);    
+            
+
 
             const previousButton = document.createElement("button");
             previousButton.innerText = "Previous";
