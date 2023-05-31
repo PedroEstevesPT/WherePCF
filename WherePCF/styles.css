@@ -15,4 +15,13 @@
 
   
   
+  .grid-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
   
+  .grid-table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
