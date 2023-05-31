@@ -1,25 +1,20 @@
-import {IInputs, IOutputs} from "./generated/ManifestTypes";
+import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import axios from "axios";
 
 export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOutputs> {
     updateView(context: ComponentFramework.Context<IInputs>): void {
         throw new Error("Method not implemented.");
     }
-
     private streetName: string;
     private label: HTMLLabelElement;
+    private recordCount: number;
+    private currentIndex: number;
+    private searchData: any[];
 
-    /**
-     * Used to initialize the control instance.
-     * @param context The entire property bag available to control via Context Object.
-     * @param notifyOutputChanged A callback method to alert the framework that the control has new outputs ready to be retrieved asynchronously.
-     * @param state A piece of data that persists in one session for a single user.
-     * @param container If a control is marked control-type='standard', it will receive an empty div element within which it can render its content.
-     */
     public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement): void {
         // Create the label element
         this.label = document.createElement("label");
-        this.label.innerText = "Street Name";
+        this.label.innerText = "WherePCF";
         container.appendChild(this.label);
 
         // Create the input element
@@ -28,6 +23,11 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
         input.addEventListener("input", this.handleInputChange.bind(this));
         input.addEventListener("keydown", this.handleEnterKey.bind(this));
         container.appendChild(input);
+
+        // Create the container for displaying results
+        const resultsContainer = document.createElement("div");
+        resultsContainer.id = "results-container";
+        container.appendChild(resultsContainer);
     }
 
     private handleInputChange(event: Event) {
@@ -38,27 +38,73 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
         if (event.key === "Enter") {
             const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(this.streetName)}&format=json`;
 
-            axios.get(url)
-                .then(response => {
-                    // Handle the API response data
+            axios
+                .get(url)
+                .then((response) => {
+                    
+
+                    if (response.status === 200) {
+                        this.searchData = response.data;
+                        this.recordCount = this.searchData.length;
+                        this.currentIndex = 0;
+                        this.displayRecord(this.searchData[this.currentIndex]);
+                    }
                 })
-                .catch(error => {
+                .catch((error) => {
                     // Handle any errors
                 });
         }
     }
 
-    /**
-     * It is called by the framework prior to a control receiving new data.
-     * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
-     */
+    private displayRecord(record: any) {
+        const resultsContainer = document.getElementById("results-container");
+        if (resultsContainer) {
+            resultsContainer.innerHTML = "";
+
+            const recordCountLabel = document.createElement("label");
+            recordCountLabel.innerText = `Result ${this.currentIndex + 1} of ${this.recordCount}`;
+            resultsContainer.appendChild(recordCountLabel);
+
+            //Displays the name
+            const displayText = document.createElement("p");
+            displayText.innerText = record.display_name;
+            resultsContainer.appendChild(displayText);
+
+            //Display category
+            const typeText = document.createElement("p");
+            typeText.innerText = record.type;
+            resultsContainer.appendChild(typeText);
+
+            const previousButton = document.createElement("button");
+            previousButton.innerText = "Previous";
+            previousButton.addEventListener("click", this.handlePreviousButtonClick.bind(this));
+            resultsContainer.appendChild(previousButton);
+
+            const nextButton = document.createElement("button");
+            nextButton.innerText = "Next";
+            nextButton.addEventListener("click", this.handleNextButtonClick.bind(this));
+            resultsContainer.appendChild(nextButton);
+        }
+    }
+
+    private handlePreviousButtonClick() {
+        if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.displayRecord(this.searchData[this.currentIndex]);
+        }
+    }
+
+    private handleNextButtonClick() {
+        if (this.currentIndex < this.recordCount - 1) {
+            this.currentIndex++;
+            this.displayRecord(this.searchData[this.currentIndex]);
+        }
+    }
+
     public getOutputs(): IOutputs {
         return {};
     }
 
-    /**
-     * Called when the control is to be removed from the DOM tree. Controls should use this call for cleanup.
-     */
     public destroy(): void {
         // Clean up any resources
     }
