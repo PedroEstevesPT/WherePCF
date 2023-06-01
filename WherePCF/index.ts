@@ -58,101 +58,101 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
         }
     }
 
-    private displayRecord(record: any) {
-        const resultsContainer = document.getElementById("results-container");
-        if (resultsContainer) {
-          resultsContainer.innerHTML = "";
-      
-          const recordCountLabel = document.createElement("label");
-          recordCountLabel.innerHTML = `Result ${this.currentIndex + 1} of ${this.recordCount} <br>`;
-          resultsContainer.appendChild(recordCountLabel);
-      
-          const previousButton = document.createElement("button");
-          previousButton.innerText = "Previous";
-          previousButton.addEventListener("click", this.handlePreviousButtonClick.bind(this));
-          resultsContainer.appendChild(previousButton);
-      
-          const nextButton = document.createElement("button");
-          nextButton.innerText = "Next";
-          nextButton.addEventListener("click", this.handleNextButtonClick.bind(this));
-          resultsContainer.appendChild(nextButton);
-      
-          // Displays the name
-          const displayText = document.createElement("p");
-          displayText.innerHTML = "<strong>Name:</strong><br>" + record.display_name;
-          resultsContainer.appendChild(displayText);
-      
-          const latitude = record.lat;
-          const longitude = record.lon;
-          const [minLatitude, maxLatitude, minLongitude, maxLongitude] = record.boundingbox;
-      
-          // Added Iframe
-          const mapContainer = document.createElement("div");
-          mapContainer.innerHTML = `
-            <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" 
-            src="https://www.openstreetmap.org/export/embed.html?bbox=${minLongitude},${minLatitude},${maxLongitude},${maxLatitude}&amp;layer=mapnik" style="border: 1px solid black"></iframe>
-            <br/>
-            <small><a href="https://www.openstreetmap.org/#map=17/${latitude}/${longitude}">View Larger Map</a></small>
-          `;
-          resultsContainer.appendChild(mapContainer);
-      
-          // Grid Table
-          const gridTable = document.createElement("table");
-          gridTable.classList.add("grid-table");
-      
-          // Type
-          const typeRow = document.createElement("tr");
-          const typeLabelCell = document.createElement("td");
-          typeLabelCell.textContent = "Type";
-          const typeValueCell = document.createElement("td");
-          typeValueCell.textContent = record.type;
-          typeRow.appendChild(typeLabelCell);
-          typeRow.appendChild(typeValueCell);
-          gridTable.appendChild(typeRow);
-      
-          // Class
-          const classRow = document.createElement("tr");
-          const classLabelCell = document.createElement("td");
-          classLabelCell.textContent = "Class";
-          const classValueCell = document.createElement("td");
-          classValueCell.textContent = record.class;
-          classRow.appendChild(classLabelCell);
-          classRow.appendChild(classValueCell);
-          gridTable.appendChild(classRow);
-      
-          // Latitude
-          const latitudeRow = document.createElement("tr");
-          const latitudeLabelCell = document.createElement("td");
-          latitudeLabelCell.textContent = "Latitude";
-          const latitudeValueCell = document.createElement("td");
-          latitudeValueCell.textContent = record.lat;
-          latitudeRow.appendChild(latitudeLabelCell);
-          latitudeRow.appendChild(latitudeValueCell);
-          gridTable.appendChild(latitudeRow);
-      
-          // Longitude
-          const longitudeRow = document.createElement("tr");
-          const longitudeLabelCell = document.createElement("td");
-          longitudeLabelCell.textContent = "Longitude";
-          const longitudeValueCell = document.createElement("td");
-          longitudeValueCell.textContent = record.lon;
-          longitudeRow.appendChild(longitudeLabelCell);
-          longitudeRow.appendChild(longitudeValueCell);
-          gridTable.appendChild(longitudeRow);
-      
-          // BBox Coordinates
-          const bboxRow = document.createElement("tr");
-          const bboxLabelCell = document.createElement("td");
-          bboxLabelCell.textContent = "BBox Coordinates";
-          const bboxValueCell = document.createElement("td");
-          bboxValueCell.textContent = record.boundingbox.join(", ");
-          bboxRow.appendChild(bboxLabelCell);
-          bboxRow.appendChild(bboxValueCell);
-          gridTable.appendChild(bboxRow);
-      
-          resultsContainer.appendChild(gridTable);
-        }
-      }
+private displayRecord(record: any) {
+  const resultsContainer = document.getElementById("results-container");
+  if (resultsContainer) {
+    resultsContainer.innerHTML = "";
+
+    const recordCountLabel = document.createElement("label");
+    recordCountLabel.innerHTML = `Result ${this.currentIndex + 1} of ${this.recordCount} <br>`;
+    resultsContainer.appendChild(recordCountLabel);
+
+    const previousButton = document.createElement("button");
+    previousButton.innerText = "Previous";
+    previousButton.addEventListener("click", this.handlePreviousButtonClick.bind(this));
+    resultsContainer.appendChild(previousButton);
+
+    const nextButton = document.createElement("button");
+    nextButton.innerText = "Next";
+    nextButton.addEventListener("click", this.handleNextButtonClick.bind(this));
+    resultsContainer.appendChild(nextButton);
+
+    // Displays the name
+    const displayText = document.createElement("p");
+    displayText.innerHTML = "<strong>Name:</strong><br>" + record.display_name;
+    resultsContainer.appendChild(displayText);
+
+    const latitude = record.lat;
+    const longitude = record.lon;
+    const [minLatitude, maxLatitude, minLongitude, maxLongitude] = record.boundingbox;
+
+    // Added Iframe
+    const mapContainer = document.createElement("div");
+    mapContainer.innerHTML = `
+      <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" 
+      src="https://www.openstreetmap.org/export/embed.html?bbox=${minLongitude},${minLatitude},${maxLongitude},${maxLatitude}&amp;layer=mapnik" style="border: 1px solid black"></iframe>
+      <br/>
+      <small><a href="https://www.openstreetmap.org/#map=17/${latitude}/${longitude}">View Larger Map</a></small>
+    `;
+    resultsContainer.appendChild(mapContainer);
+
+    // Grid Table
+    const gridTable = document.createElement("table");
+    gridTable.classList.add("grid-table");
+
+    // Type
+    const typeRow = document.createElement("tr");
+    const typeLabelCell = document.createElement("td");
+    typeLabelCell.textContent = "Type";
+    const typeValueCell = document.createElement("td");
+    typeValueCell.textContent = record.type;
+    typeRow.appendChild(typeLabelCell);
+    typeRow.appendChild(typeValueCell);
+    gridTable.appendChild(typeRow);
+
+    // Class
+    const classRow = document.createElement("tr");
+    const classLabelCell = document.createElement("td");
+    classLabelCell.textContent = "Class";
+    const classValueCell = document.createElement("td");
+    classValueCell.textContent = record.class;
+    classRow.appendChild(classLabelCell);
+    classRow.appendChild(classValueCell);
+    gridTable.appendChild(classRow);
+
+    // Latitude
+    const latitudeRow = document.createElement("tr");
+    const latitudeLabelCell = document.createElement("td");
+    latitudeLabelCell.textContent = "Latitude";
+    const latitudeValueCell = document.createElement("td");
+    latitudeValueCell.textContent = record.lat;
+    latitudeRow.appendChild(latitudeLabelCell);
+    latitudeRow.appendChild(latitudeValueCell);
+    gridTable.appendChild(latitudeRow);
+
+    // Longitude
+    const longitudeRow = document.createElement("tr");
+    const longitudeLabelCell = document.createElement("td");
+    longitudeLabelCell.textContent = "Longitude";
+    const longitudeValueCell = document.createElement("td");
+    longitudeValueCell.textContent = record.lon;
+    longitudeRow.appendChild(longitudeLabelCell);
+    longitudeRow.appendChild(longitudeValueCell);
+    gridTable.appendChild(longitudeRow);
+
+    // BBox Coordinates
+    const bboxRow = document.createElement("tr");
+    const bboxLabelCell = document.createElement("td");
+    bboxLabelCell.textContent = "BBox Coordinates";
+    const bboxValueCell = document.createElement("td");
+    bboxValueCell.textContent = record.boundingbox.join(", ");
+    bboxRow.appendChild(bboxLabelCell);
+    bboxRow.appendChild(bboxValueCell);
+    gridTable.appendChild(bboxRow);
+
+    resultsContainer.appendChild(gridTable);
+  }
+}
 
 
     private handlePreviousButtonClick() {
