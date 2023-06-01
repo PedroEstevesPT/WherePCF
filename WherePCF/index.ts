@@ -2,6 +2,8 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import axios from "axios";
 import "./styles.css";
 import "./bootstrap/css/bootstrap.min.css";
+import "./fonts/roboto.css";
+import RobotoRegular from "./fonts/Roboto-Regular.ttf"
 
 export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOutputs> {
     updateView(context: ComponentFramework.Context<IInputs>): void {
@@ -17,11 +19,16 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
         // Create the label element
         this.label = document.createElement("label");
         this.label.innerText = "WherePCF";
+        this.label.style.fontFamily = "'Roboto', sans-serif";
+        this.label.style.fontSize = "140%";
+
         container.appendChild(this.label);
 
         // Create the input element
         const input = document.createElement("input");
         input.type = "text";
+        input.text = "Search";
+        input.classList.add("form-control"); // Add the Bootstrap form-control class
         input.addEventListener("input", this.handleInputChange.bind(this));
         input.addEventListener("keydown", this.handleEnterKey.bind(this));
         container.appendChild(input);
@@ -59,6 +66,17 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
         }
     }
 
+    private capitalizeFirstLetter(string: string): string {
+        if (string.length === 0) {
+          return string; // Return empty string if the input is empty
+        }
+        
+        const firstLetter = string.charAt(0).toUpperCase();
+        const restOfTheString = string.slice(1);
+        
+        return firstLetter + restOfTheString;
+      }
+
 private displayRecord(record: any) {
   const resultsContainer = document.getElementById("results-container");
   if (resultsContainer) {
@@ -66,6 +84,8 @@ private displayRecord(record: any) {
 
     const recordCountLabel = document.createElement("label");
     recordCountLabel.innerHTML = `Result ${this.currentIndex + 1} of ${this.recordCount} <br>`;
+    recordCountLabel.classList.add("custom-label");
+    recordCountLabel.style.fontFamily = "'Roboto', sans-serif"; // Specify the font styles directly
     resultsContainer.appendChild(recordCountLabel);
 
     const buttonsContainer = document.createElement("div");
@@ -100,6 +120,9 @@ private displayRecord(record: any) {
     // Displays the name
     const displayText = document.createElement("p");
     displayText.innerHTML = "<strong>Name:</strong><br>" + record.display_name;
+    displayText.classList.add("custom-text"); // Add a custom class to the element
+    displayText.style.fontFamily = "'Roboto', sans-serif"; // Specify the font styles directly
+
     resultsContainer.appendChild(displayText);
 
     const latitude = record.lat;
@@ -125,7 +148,11 @@ private displayRecord(record: any) {
     const typeLabelCell = document.createElement("td");
     typeLabelCell.textContent = "Type";
     const typeValueCell = document.createElement("td");
-    typeValueCell.textContent = record.type;
+    typeValueCell.textContent = this.capitalizeFirstLetter(record.type);
+    typeLabelCell.classList.add("custom-text"); 
+    typeValueCell.classList.add("custom-text");
+    typeLabelCell.style.fontFamily = "'Roboto', sans-serif";
+    typeValueCell.style.fontFamily = "'Roboto', sans-serif";
     typeRow.appendChild(typeLabelCell);
     typeRow.appendChild(typeValueCell);
     gridTable.appendChild(typeRow);
@@ -135,7 +162,9 @@ private displayRecord(record: any) {
     const classLabelCell = document.createElement("td");
     classLabelCell.textContent = "Class";
     const classValueCell = document.createElement("td");
-    classValueCell.textContent = record.class;
+    classValueCell.textContent = this.capitalizeFirstLetter(record.class);
+    classLabelCell.style.fontFamily = "'Roboto', sans-serif";
+    classValueCell.style.fontFamily = "'Roboto', sans-serif";
     classRow.appendChild(classLabelCell);
     classRow.appendChild(classValueCell);
     gridTable.appendChild(classRow);
@@ -146,6 +175,8 @@ private displayRecord(record: any) {
     latitudeLabelCell.textContent = "Latitude";
     const latitudeValueCell = document.createElement("td");
     latitudeValueCell.textContent = record.lat;
+    latitudeLabelCell.style.fontFamily = "'Roboto', sans-serif";
+    latitudeValueCell.style.fontFamily = "'Roboto', sans-serif";
     latitudeRow.appendChild(latitudeLabelCell);
     latitudeRow.appendChild(latitudeValueCell);
     gridTable.appendChild(latitudeRow);
@@ -156,6 +187,8 @@ private displayRecord(record: any) {
     longitudeLabelCell.textContent = "Longitude";
     const longitudeValueCell = document.createElement("td");
     longitudeValueCell.textContent = record.lon;
+    longitudeLabelCell.style.fontFamily = "'Roboto', sans-serif";
+    longitudeValueCell.style.fontFamily = "'Roboto', sans-serif";
     longitudeRow.appendChild(longitudeLabelCell);
     longitudeRow.appendChild(longitudeValueCell);
     gridTable.appendChild(longitudeRow);
@@ -166,6 +199,8 @@ private displayRecord(record: any) {
     bboxLabelCell.textContent = "BBox Coordinates";
     const bboxValueCell = document.createElement("td");
     bboxValueCell.textContent = record.boundingbox.join(", ");
+    bboxLabelCell.style.fontFamily = "'Roboto', sans-serif";
+    bboxValueCell.style.fontFamily = "'Roboto', sans-serif";
     bboxRow.appendChild(bboxLabelCell);
     bboxRow.appendChild(bboxValueCell);
     gridTable.appendChild(bboxRow);
