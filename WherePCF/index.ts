@@ -1,6 +1,7 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import axios from "axios";
 import "./styles.css";
+import "./bootstrap/css/bootstrap.min.css";
 
 export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOutputs> {
     updateView(context: ComponentFramework.Context<IInputs>): void {
@@ -67,15 +68,34 @@ private displayRecord(record: any) {
     recordCountLabel.innerHTML = `Result ${this.currentIndex + 1} of ${this.recordCount} <br>`;
     resultsContainer.appendChild(recordCountLabel);
 
-    const previousButton = document.createElement("button");
-    previousButton.innerText = "Previous";
-    previousButton.addEventListener("click", this.handlePreviousButtonClick.bind(this));
-    resultsContainer.appendChild(previousButton);
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.classList.add("row", "mt-3");
+    resultsContainer.appendChild(buttonsContainer);
 
+    const previousButtonWrapper = document.createElement("div");
+    previousButtonWrapper.classList.add("col");
+    buttonsContainer.appendChild(previousButtonWrapper);
+    const previousButton = document.createElement("button");
+    previousButton.innerText = "Prev";
+    previousButton.addEventListener("click", this.handlePreviousButtonClick.bind(this));
+    previousButton.classList.add("btn", "btn-primary");
+    previousButtonWrapper.classList.add("col-auto");
+    previousButtonWrapper.appendChild(previousButton);
+
+    
+    const nextButtonWrapper = document.createElement("div");
+    nextButtonWrapper.classList.add("col");
+    buttonsContainer.appendChild(nextButtonWrapper);
     const nextButton = document.createElement("button");
     nextButton.innerText = "Next";
     nextButton.addEventListener("click", this.handleNextButtonClick.bind(this));
-    resultsContainer.appendChild(nextButton);
+    nextButton.classList.add("btn", "btn-primary");
+    nextButtonWrapper.classList.add("col-auto");
+    nextButtonWrapper.appendChild(nextButton);
+
+    buttonsContainer.classList.add("row", "mt-3", "d-flex", "justify-content-center");
+
+
 
     // Displays the name
     const displayText = document.createElement("p");
