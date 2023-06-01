@@ -27,7 +27,7 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
         // Create the input element
         const input = document.createElement("input");
         input.type = "text";
-        input.text = "Search";
+        input.placeholder = "Search";
         input.classList.add("form-control"); // Add the Bootstrap form-control class
         input.addEventListener("input", this.handleInputChange.bind(this));
         input.addEventListener("keydown", this.handleEnterKey.bind(this));
