@@ -31,3 +31,8 @@ msbuild /t:restore
 msbuild 
 
  The solution will be created in the WherePCF/solution/bin/Debug folder
+ 
+ Other images:
+ 
+ ![image](https://github.com/PedroFortunatoEsteves/WherePCF/assets/14300941/19d4f487-bfd3-48dd-8e52-5bc12ef4d20b)
+
