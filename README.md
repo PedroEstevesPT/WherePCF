@@ -27,7 +27,3 @@ msbuild /t:restore
 msbuild 
 
  The solution will be created in the WherePCF/solution/bin/Debug folder
-
-
-6) Rename the solution
- pac solution rename --path "C:\Users\pedroesteves\Desktop\WherePCF\solution\bin\Debug\solution.zip" --new-name "WherePCF"
