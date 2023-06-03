@@ -4,6 +4,10 @@ With this PCF, users are empowered to effortlessly explore and discover desired 
 Seamlessly integrating with the robust open source public API, specifically the esteemed https://nominatim.openstreetmap.org, this PCF harnesses its capabilities to procure an extensive list of locations that perfectly align with the user's natural language query. 
 By doing so, it unveils an immersive experience by presenting not only the complete name of the locations, but also their precise geographic coordinates, enriching street maps, and insightful categorization of each retrieved place.
 
+![image](https://github.com/PedroFortunatoEsteves/WherePCF/assets/14300941/0e3ef860-48d9-4024-84ea-b26155e1ef4b)
+
+
+
 # To create the PCF:
 pac pcf init --namespace pedroesteves --name WherePCF --template field
 
