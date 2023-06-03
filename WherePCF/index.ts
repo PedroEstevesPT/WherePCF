@@ -15,6 +15,7 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
     private currentIndex: number;
     private searchData: any[];
 
+
     public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement): void {
         // Create the label element
         this.label = document.createElement("label");
@@ -27,7 +28,7 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
         // Create the input element
         const input = document.createElement("input");
         input.type = "text";
-        input.placeholder = "Search";
+        input.placeholder = "Write your location";
         input.classList.add("form-control"); // Add the Bootstrap form-control class
         input.addEventListener("input", this.handleInputChange.bind(this));
         input.addEventListener("keydown", this.handleEnterKey.bind(this));
@@ -39,32 +40,52 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
         container.appendChild(resultsContainer);
     }
 
+
     private handleInputChange(event: Event) {
         this.streetName = (event.target as HTMLInputElement).value;
     }
 
+
     private handleEnterKey(event: KeyboardEvent) {
         if (event.key === "Enter") {
-            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(this.streetName)}&format=json`;
-
-            axios
-                .get(url)
-                .then((response) => {
-                    
-
-                    if (response.status === 200) {
-                        this.searchData = response.data;
-                        this.recordCount = this.searchData.length;
-                        this.currentIndex = 0;
-                        this.displayRecord(this.searchData[this.currentIndex]);
-                        console.log(response.data);
-                    }
-                })
-                .catch((error) => {
-                    // Handle any errors
-                });
+            // Show the spinner
+            const spinner = document.createElement("div");
+            spinner.classList.add("spinner");
+            const resultsContainer = document.getElementById("results-container");
+            if (resultsContainer) {
+                resultsContainer.innerHTML = "";
+                resultsContainer.appendChild(spinner);
+    
+                const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(this.streetName)}&format=json`;
+    
+                axios
+                    .get(url)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            // Remove the spinner
+                            if (resultsContainer.contains(spinner)) {
+                                resultsContainer.removeChild(spinner);
+                            }
+    
+                            this.searchData = response.data;
+                            this.recordCount = this.searchData.length;
+                            this.currentIndex = 0;
+                            this.displayRecord(this.searchData[this.currentIndex]);
+                            console.log(response.data);
+                        }
+                    })
+                    .catch((error) => {
+                        // Remove the spinner
+                        if (resultsContainer.contains(spinner)) {
+                            resultsContainer.removeChild(spinner);
+                        }
+    
+                        // Handle any errors
+                    });
+            }
         }
     }
+
 
     private capitalizeFirstLetter(string: string): string {
         if (string.length === 0) {
@@ -83,7 +104,17 @@ private displayRecord(record: any) {
     resultsContainer.innerHTML = "";
 
     const recordCountLabel = document.createElement("label");
+
+
+
     recordCountLabel.innerHTML = `Result ${this.currentIndex + 1} of ${this.recordCount} <br>`;
+    
+    if (this.searchData.length == 0) { 
+        recordCountLabel.innerHTML = `Result 0 of 0 <br>`;
+    }
+
+
+    
     recordCountLabel.classList.add("custom-label");
     recordCountLabel.style.fontFamily = "'Roboto', sans-serif"; // Specify the font styles directly
     resultsContainer.appendChild(recordCountLabel);
