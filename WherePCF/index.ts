@@ -18,12 +18,11 @@ export class WherePCF implements ComponentFramework.StandardControl<IInputs, IOu
 
     public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement): void {
         // Create the label element
-        this.label = document.createElement("label");
-        this.label.innerText = "WherePCF";
-        this.label.style.fontFamily = "'Roboto', sans-serif";
-        this.label.style.fontSize = "140%";
-
-        container.appendChild(this.label);
+        //this.label = document.createElement("label");
+        //this.label.innerText = "WherePCF";
+        //this.label.style.fontFamily = "'Roboto', sans-serif";
+        //this.label.style.fontSize = "140%";
+        //container.appendChild(this.label);
 
         // Create the input element
         const input = document.createElement("input");
